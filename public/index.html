@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSN Account ID Finder</title>
+  <meta name="description" content="Free tool to extract your PlayStation Network Account ID in Base64 format for Chiaki, PSPlay and other Remote Play clients." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="top-bar">
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+          </svg>
+          <h1>PSN Account ID</h1>
+        </div>
+        <div class="lang-switch">
+          <button id="langEn" class="lang-btn active" data-lang="en">EN</button>
+          <button id="langFa" class="lang-btn" data-lang="fa">FA</button>
+        </div>
+      </div>
+      <p class="subtitle" data-i18n="subtitle">Extract your PlayStation Network Account ID in Base64 format</p>
+    </header>
+
+    <main>
+      <!-- Step 1 -->
+      <section class="card step" id="step1">
+        <div class="step-header">
+          <span class="step-number">1</span>
+          <h2 data-i18n="step1_title">Sign in to PlayStation</h2>
+        </div>
+        <p class="step-desc" data-i18n="step1_desc">
+          Click the button below to open the official Sony login page.
+          Sign in with your PSN account. After signing in you will see a page that says <strong>redirect</strong>.
+        </p>
+        <button id="btnLogin" class="btn btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+          <span data-i18n="btn_login">Sign in with PlayStation</span>
+        </button>
+        <p class="hint" data-i18n="hint_password">Your password is entered only on Sony’s official site and is never sent to this tool.</p>
+      </section>
+
+      <!-- Step 2 -->
+      <section class="card step" id="step2">
+        <div class="step-header">
+          <span class="step-number">2</span>
+          <h2 data-i18n="step2_title">Paste the redirect URL</h2>
+        </div>
+        <p class="step-desc" data-i18n="step2_desc">
+          After a successful login, copy the full address from the browser’s address bar
+          (it usually starts with <code>https://remoteplay.dl.playstation.net/remoteplay/redirect?code=...</code>)
+          and paste it into the box below.
+        </p>
+        <textarea id="redirectUrl" placeholder="https://remoteplay.dl.playstation.net/remoteplay/redirect?code=...." rows="3"></textarea>
+        <button id="btnExtract" class="btn btn-primary" disabled>
+          <span data-i18n="btn_extract">Get Account ID</span>
+        </button>
+      </section>
+
+      <!-- Result -->
+      <section class="card result hidden" id="resultSection">
+        <div class="step-header">
+          <span class="step-number">✓</span>
+          <h2 data-i18n="result_title">Result</h2>
+        </div>
+        <div class="result-box">
+          <label data-i18n="label_base64">PSN Account ID (Base64 – for Chiaki / PSPlay)</label>
+          <div class="copy-group">
+            <input type="text" id="accountIdBase64" readonly />
+            <button class="btn btn-copy" data-target="accountIdBase64" data-i18n="btn_copy">Copy</button>
+          </div>
+        </div>
+        <div class="result-box">
+          <label data-i18n="label_decimal">User ID (Decimal)</label>
+          <div class="copy-group">
+            <input type="text" id="userIdDecimal" readonly />
+            <button class="btn btn-copy" data-target="userIdDecimal" data-i18n="btn_copy">Copy</button>
+          </div>
+        </div>
+        <div class="result-box">
+          <label data-i18n="label_hex">Hex (Little-Endian)</label>
+          <div class="copy-group">
+            <input type="text" id="userIdHex" readonly />
+            <button class="btn btn-copy" data-target="userIdHex" data-i18n="btn_copy">Copy</button>
+          </div>
+        </div>
+        <p class="success-msg" data-i18n="success_msg">Account ID extracted successfully. You can use it in Chiaki or other Remote Play apps.</p>
+      </section>
+
+      <!-- Error -->
+      <div class="card error hidden" id="errorSection">
+        <h3 data-i18n="error_title">Error</h3>
+        <p id="errorMsg"></p>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading hidden" id="loading">
+        <div class="spinner"></div>
+        <p data-i18n="loading">Contacting Sony servers...</p>
+      </div>
+    </main>
+
+    <footer>
+      <p data-i18n="footer_privacy">
+        This tool is fully client-side (or uses a short-lived serverless function) and does not store any of your account data.
+        Based on the open-source Chiaki scripts.
+      </p>
+      <p class="disclaimer" data-i18n="footer_disclaimer">
+        Not affiliated with Sony Interactive Entertainment.
+        PlayStation and PSN are trademarks of Sony Interactive Entertainment Inc.
+      </p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
